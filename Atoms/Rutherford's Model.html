@@ -1,0 +1,100 @@
+<!doctype html>
+<html>
+<body></body>
+<script src="http://gamingJS.com/Three.js"></script>
+<script src="http://gamingJS.com/physi.js"></script>
+<script src="http://gamingJS.com/ChromeFixes.js"></script>
+<script>
+  var scene = new THREE.Scene();
+  
+  var aspect_ratio = window.innerWidth / window.innerHeight;
+  var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
+  camera.position.set(0, 0, 100);
+  scene.add(camera);
+  
+  var renderer = new THREE.WebGLRenderer();
+  renderer.shadowMapEnabled = true;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+  
+  clock = new THREE.Clock();
+  
+  var ball = new Physijs.SphereMesh(
+    new THREE.SphereGeometry (5, 25, 25),
+    new THREE.MeshPhongMaterial({
+    color: 0x333333,
+    shininess: 100.0,
+    ambient: 0xff0000,
+    emissive:0x111111,
+    specular:0xbbbbbb
+    })
+  );
+  ball.castShadow = true;
+    
+  var cloud = new Physijs.SphereMesh(
+    new THREE.SphereGeometry (50, 25, 25),
+    new THREE.MeshPhongMaterial({
+    color: 0xFFFF00,
+    opacity: 0.15,
+    ambient: 0xff0000,
+    emissive:0x111111,
+    specular:0xbbbbbb
+    })
+  );
+  cloud.castShadow = true;
+
+  var sur = new THREE.MeshPhongMaterial({color :0xFFFF00});
+  var vol = new THREE.SphereGeometry(2, 20, 20);
+  var ele1 = new THREE.Mesh(vol, sur);
+  var ele2 = new THREE.Mesh(vol, sur);
+  var ele3 = new THREE.Mesh(vol, sur);
+  var ele4 = new THREE.Mesh(vol, sur);
+  var ele5 = new THREE.Mesh(vol, sur);
+  var ele6 = new THREE.Mesh(vol, sur);
+  var ele7 = new THREE.Mesh(vol, sur);
+  var ele8 = new THREE.Mesh(vol, sur);
+  
+  addLights();
+  
+  scene.add(cloud);
+  scene.add(ball);
+  scene.add(ele1);
+  scene.add(ele2);
+  scene.add(ele3);
+  scene.add(ele4);
+  scene.add(ele5);
+  scene.add(ele6);
+  scene.add(ele7);
+  scene.add(ele8);
+  
+  animate();
+  
+  function addLights() {
+    scene.add(new THREE.AmbientLight(0x999999));
+  
+    var back_light = new THREE.PointLight(0xffffff);
+    back_light.position.set(50, 50, -100);
+    scene.add(back_light);
+  
+    var spot_light = new THREE.SpotLight(0xffffff);
+    spot_light.position.set(-250, 250, 250);
+    spot_light.castShadow = true;
+    scene.add(spot_light);
+  }
+  
+  function animate () {
+    requestAnimationFrame(animate);
+    var time = clock.getElapsedTime();
+    var o_angle = time * 4;
+    ele1.position.set(20*Math.cos(o_angle + Math.PI / 2), 50* Math.sin(o_angle + Math.PI / 2), 0);
+    ele2.position.set(-20*Math.cos(o_angle + Math.PI / 2), -50* Math.sin(o_angle + Math.PI / 2), 0);
+    ele3.position.set(-50*Math.cos(o_angle + Math.PI / 2), -20* Math.sin(o_angle + Math.PI / 2), 0);
+    ele4.position.set(50*Math.cos(o_angle + Math.PI / 2), 20* Math.sin(o_angle + Math.PI / 2), 0);
+    ele5.position.set(20*Math.cos(o_angle), 50 * Math.sin(o_angle), 0);
+    ele6.position.set(-20*Math.cos(o_angle), -50 * Math.sin(o_angle), 0);
+    ele7.position.set(50*Math.cos(o_angle), 20 * Math.sin(o_angle), 0);
+    ele8.position.set(-50*Math.cos(o_angle), -20 * Math.sin(o_angle), 0);
+    renderer.render(scene, camera);
+  }  
+</script>
+</html>
